@@ -1,0 +1,12 @@
+{
+  "name": "Tifli AI",
+  "description": "Professional Full-Stack AI website that predicts your future child's look based on parents' photos using advanced facial analysis and genetic synthesis.",
+  "requestFramePermissions": [
+    "camera"
+  ],
+  "majorCapabilities": [
+    "image_processing",
+    "generative_ai",
+    "multilingual_support"
+  ]
+}
