@@ -7,17 +7,12 @@ import {
   Dna,
   Activity, 
   Trash2, 
-  ShieldAlert, 
   Bell, 
   Settings as SettingsIcon,
   LogOut,
   MessageSquare,
   Ban,
-  Clock,
-  Save,
-  Palette,
   Globe,
-  Plus,
   Megaphone,
   Database as DatabaseIcon
 } from 'lucide-react';
@@ -251,7 +246,6 @@ export function AdminPanel({ onLogout, lang, onLanguageToggle }: AdminPanelProps
             { id: 'images', label: t.imageMgmt, icon: ImageIcon },
             { id: 'ads', label: lang === 'ar' ? 'الإعلانات' : 'Advertisements', icon: Megaphone },
             { id: 'messages', label: t.broadcast, icon: MessageSquare },
-            { id: 'notifications', label: t.notifications, icon: Bell },
             { id: 'settings', label: t.siteSettings, icon: SettingsIcon }
           ].map(item => (
             <button
@@ -299,13 +293,12 @@ export function AdminPanel({ onLogout, lang, onLanguageToggle }: AdminPanelProps
                 {activeTab === 'images' && t.imageMgmt}
                 {activeTab === 'ads' && (lang === 'ar' ? 'إدارة الإعلانات' : 'Ads Management')}
                 {activeTab === 'messages' && t.broadcast}
-                {activeTab === 'notifications' && t.notifications}
                 {activeTab === 'settings' && t.siteSettings}
               </h1>
               <p className="text-white/40 text-sm">{lang === 'ar' ? 'إدارة ومراقبة معايير النظام في الوقت الفعلي.' : 'Manage and monitor system parameters in real-time.'}</p>
             </div>
 
-            {/* dashboard */}
+            {/* dashboard Tab */}
             {activeTab === 'dashboard' && (
               <div className="space-y-10">
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
@@ -334,11 +327,11 @@ export function AdminPanel({ onLogout, lang, onLanguageToggle }: AdminPanelProps
                             {i}
                           </div>
                           <div>
-                            <p className="text-sm">{(t as any).newImgKSA}</p>
-                            <p className="text-[10px] text-white/40">{i * 2} {(t as any).minutesAgo}</p>
+                            <p className="text-sm">{t.newImgKSA}</p>
+                            <p className="text-[10px] text-white/40">{i * 2} {t.minutesAgo}</p>
                           </div>
                         </div>
-                        <span className="text-[10px] font-bold text-neon-blue px-2 py-1 bg-neon-blue/5 rounded">{(t as any).success}</span>
+                        <span className="text-[10px] font-bold text-neon-blue px-2 py-1 bg-neon-blue/5 rounded">{t.success}</span>
                       </div>
                     ))}
                   </div>
@@ -346,7 +339,7 @@ export function AdminPanel({ onLogout, lang, onLanguageToggle }: AdminPanelProps
               </div>
             )}
 
-            {/* users */}
+            {/* users Tab */}
             {activeTab === 'users' && (
               <div className="glass rounded-3xl border-white/10 overflow-hidden">
                 <table className={`w-full ${lang === 'ar' ? 'text-right' : 'text-left'}`}>
@@ -393,55 +386,54 @@ export function AdminPanel({ onLogout, lang, onLanguageToggle }: AdminPanelProps
               </div>
             )}
 
-            {/* settings section */}
-            {activeTab === 'settings' && (
-              <div className="glass p-8 rounded-3xl border-white/10 space-y-8">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                  <div className="space-y-6">
-                    <div className="flex items-center gap-2">
-                      <Globe size={18} className="text-neon-blue" />
-                      <h3 className="font-bold uppercase tracking-widest text-xs">{lang === 'ar' ? 'الإعدادات الأساسية' : 'General Settings'}</h3>
-                    </div>
-                    <div className="space-y-4">
-                      <div className="space-y-2">
-                        <label className="text-[10px] font-bold text-white/40 uppercase px-1">{lang === 'ar' ? 'اسم الموقع' : 'Site Name'}</label>
-                        <input 
-                          type="text" 
-                          value={siteSettings.name}
-                          onChange={(e) => setSiteSettings(prev => ({ ...prev, name: e.target.value }))}
-                          className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-sm outline-none focus:border-neon-blue/50" 
-                        />
-                      </div>
-                      <div className="space-y-2">
-                        <label className="text-[10px] font-bold text-white/40 uppercase px-1">{lang === 'ar' ? 'اللغة الافتراضية' : 'Default Language'}</label>
-                        <select 
-                          value={siteSettings.defaultLang}
-                          onChange={(e) => setSiteSettings(prev => ({ ...prev, defaultLang: e.target.value }))}
-                          className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-sm outline-none focus:border-neon-blue/50 appearance-none"
-                        >
-                          <option value="ar">العربية</option>
-                          <option value="en">English</option>
-                        </select>
-                      </div>
-                    </div>
-                  </div>
+            {/* images Tab */}
+            {activeTab === 'images' && (
+              <div className="glass p-8 rounded-3xl border-white/10 space-y-4">
+                <div className="flex items-center gap-2 text-purple-400 mb-2">
+                  <ImageIcon size={20} />
+                  <h3 className="font-bold text-sm uppercase tracking-widest">{lang === 'ar' ? 'معرض الصور المولدة' : 'Generated Images Gallery'}</h3>
                 </div>
-                <button 
-                  onClick={handleSaveSettings}
-                  className="neon-button-purple px-12 py-4 rounded-2xl text-sm font-bold uppercase tracking-[0.2em] w-full sm:w-auto"
-                >
-                  {t.saveSettings}
-                </button>
+                <p className="text-sm text-white/60">{lang === 'ar' ? 'نظام الحذف التلقائي نشط؛ الصور تُحذف فوراً بعد المعالجة للحفاظ على الخصوصية.' : 'Automated purge system active; images are deleted immediately after processing for privacy.'}</p>
+                <div className="border border-white/5 bg-white/5 p-6 rounded-2xl text-center text-xs font-medium text-white/40 tracking-wider">
+                  {lang === 'ar' ? 'لا توجد صور مخزنة حالياً في السيرفر' : 'No images currently retained on server'}
+                </div>
+              </div>
+            )}
+
+            {/* ads Tab */}
+            {activeTab === 'ads' && (
+              <div className="glass p-8 rounded-3xl border-white/10 space-y-6">
+                 <div className="flex items-center gap-2 text-neon-purple mb-2">
+                   <Megaphone size={20} />
+                   <h3 className="font-bold text-sm uppercase tracking-widest">{lang === 'ar' ? 'إدارة الإعلانات الترويجية' : 'Ads Management'}</h3>
+                 </div>
+                 <p className="text-sm text-white/60">{lang === 'ar' ? 'رفع وتعديل بنر الإعلانات المجدولة ونطاق ظهورها للمستخدمين.' : 'Upload banner images and schedule active windows for user visibility.'}</p>
+                 <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 border border-white/5 bg-white/5 p-4 rounded-xl">
+                   <input type="file" onChange={handleAdImageUpload} accept="image/*" className="text-xs text-white/60 file:bg-white/10 file:text-white file:border-0 file:p-2 file:px-4 file:rounded-lg file:mr-2 cursor-pointer" />
+                   {adSettings.imageUrl && (
+                     <div className="relative group">
+                       <img src={adSettings.imageUrl} className="w-48 h-20 object-cover rounded-lg border border-white/10" alt="Ad Preview" />
+                       <button onClick={handleDeleteAd} className="absolute -top-2 -right-2 p-1.5 bg-red-600 rounded-full text-white hover:bg-red-700 transition-colors"><Trash2 size={12} /></button>
+                     </div>
+                   )}
+                 </div>
+                 <button 
+                   onClick={handleSaveAd} 
+                   disabled={isSavingAd}
+                   className="neon-button-purple px-8 py-3 rounded-xl text-xs uppercase font-bold text-white tracking-widest disabled:opacity-50"
+                 >
+                   {isSavingAd ? (lang === 'ar' ? 'جاري الحفظ...' : 'Saving...') : (lang === 'ar' ? 'حفظ التغييرات' : 'Save Ad')}
+                 </button>
               </div>
             )}
             
-            {/* broadcast section */}
+            {/* messages Tab */}
             {activeTab === 'messages' && (
               <div className="space-y-10">
                 <div className="glass p-8 rounded-3xl border-white/10 space-y-6">
                   <h3 className="font-bold uppercase tracking-widest text-xs flex items-center gap-2">
                     <Megaphone size={18} className="text-neon-purple" />
-                    {lang === 'ar' ? 'شريط الإعلانات العلوي' : 'Top Broadcast Bar'}
+                    {lang === 'ar' ? 'شريط الإعلانات العلوي المستمر' : 'Top Broadcast Bar'}
                   </h3>
                   <textarea 
                     value={broadcastMsg}
@@ -459,6 +451,7 @@ export function AdminPanel({ onLogout, lang, onLanguageToggle }: AdminPanelProps
                           headers: { 'Content-Type': 'application/json' },
                           body: JSON.stringify({ broadcastMessage: '' })
                         });
+                        alert(lang === 'ar' ? 'تم سحب الرسالة بنجاح' : 'Broadcast withdrawn');
                       } catch (err) {
                         console.error('Failed to withdraw broadcast:', err);
                       }
@@ -472,13 +465,18 @@ export function AdminPanel({ onLogout, lang, onLanguageToggle }: AdminPanelProps
                       <MessageSquare size={18} className="text-neon-blue" />
                       {lang === 'ar' ? 'الرسائل العامة (المتحركة)' : 'General Messages (Scrolling)'}
                     </div>
+                    {generalMessages.length > 0 && (
+                      <button onClick={handleDeleteAllMessages} className="text-red-400 hover:text-red-500 text-xs flex items-center gap-1 font-medium transition-colors">
+                        <Trash2 size={14} /> {lang === 'ar' ? 'حذف الكل' : 'Delete All'}
+                      </button>
+                    )}
                   </h3>
                   <div className="flex gap-3">
                     <input 
                       type="text"
                       value={newMessageText}
                       onChange={(e) => setNewMessageText(e.target.value)}
-                      placeholder={lang === 'ar' ? 'اكتب رسالة جديدة...' : 'Type a new message...'}
+                      placeholder={lang === 'ar' ? 'اكتب رسالة جديدة لتظهر في الشريط السفلي...' : 'Type a new scrolling message...'}
                       className="flex-1 bg-white/5 border border-white/10 rounded-xl p-4 text-sm outline-none focus:border-neon-blue/50"
                     />
                     <button 
@@ -488,20 +486,60 @@ export function AdminPanel({ onLogout, lang, onLanguageToggle }: AdminPanelProps
                       {lang === 'ar' ? 'إضافة' : 'Add'}
                     </button>
                   </div>
+                  
+                  {generalMessages.length > 0 && (
+                    <div className="space-y-2 max-h-48 overflow-y-auto pr-2 border border-white/5 bg-black/20 p-4 rounded-xl">
+                      {generalMessages.map((msg: any) => (
+                        <div key={msg._id || msg.id} className="flex items-center justify-between text-xs py-2 border-b border-white/5 last:border-0">
+                          <span className="text-white/80">{msg.text}</span>
+                          <span className="text-white/40">{new Date(msg.createdAt || Date.now()).toLocaleDateString(lang)}</span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
               </div>
             )}
 
-            {/* Ads management section simplified */}
-            {activeTab === 'ads' && (
-              <div className="glass p-8 rounded-3xl space-y-4">
-                 <h3 className="font-bold">{lang === 'ar' ? 'إدارة الإعلانات' : 'Ads Management'}</h3>
-                 <p>{lang === 'ar' ? 'رفع صور الإعلانات والتحكم في ظهورها.' : 'Upload ad images and control their visibility.'}</p>
-                 <input type="file" onChange={handleAdImageUpload} accept="image/*" />
-                 {adSettings.imageUrl && <img src={adSettings.imageUrl} className="w-48 rounded-lg" />}
-                 <button onClick={handleSaveAd} className="bg-neon-purple p-3 rounded-xl text-xs uppercase font-bold text-white tracking-widest">
-                   {lang === 'ar' ? 'حفظ' : 'Save'}
-                 </button>
+            {/* settings Tab */}
+            {activeTab === 'settings' && (
+              <div className="glass p-8 rounded-3xl border-white/10 space-y-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div className="space-y-6">
+                    <div className="flex items-center gap-2">
+                      <Globe size={18} className="text-neon-blue" />
+                      <h3 className="font-bold uppercase tracking-widest text-xs">{lang === 'ar' ? 'الإعدادات الأساسية للهوية' : 'General Settings'}</h3>
+                    </div>
+                    <div className="space-y-4">
+                      <div className="space-y-2">
+                        <label className="text-[10px] font-bold text-white/40 uppercase px-1">{lang === 'ar' ? 'اسم الموقع الإلكتروني' : 'Site Name'}</label>
+                        <input 
+                          type="text" 
+                          value={siteSettings.name}
+                          onChange={(e) => setSiteSettings(prev => ({ ...prev, name: e.target.value }))}
+                          className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-sm outline-none focus:border-neon-blue/50" 
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <label className="text-[10px] font-bold text-white/40 uppercase px-1">{lang === 'ar' ? 'اللغة الافتراضية للمنصة' : 'Default Language'}</label>
+                        <select 
+                          value={siteSettings.defaultLang}
+                          onChange={(e) => setSiteSettings(prev => ({ ...prev, defaultLang: e.target.value }))}
+                          className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-sm outline-none focus:border-neon-blue/50 appearance-none text-slate-200"
+                        >
+                          <option value="ar" className="bg-[#050505]">العربية</option>
+                          <option value="en" className="bg-[#050505]">English</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <button 
+                  onClick={handleSaveSettings}
+                  className="neon-button-purple px-12 py-4 rounded-2xl text-sm font-bold uppercase tracking-[0.2em] w-full sm:w-auto"
+                >
+                  {t.saveSettings}
+                </button>
               </div>
             )}
 
