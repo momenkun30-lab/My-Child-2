@@ -1,4 +1,4 @@
-export type Language = 'ar' | 'en';
+export type Language = 'ar' | 'en'; 
 
 export const i18n = {
   en: {
@@ -71,6 +71,10 @@ export const i18n = {
     privacyNotice: 'All uploaded images are processed temporarily and are not stored on our servers.',
     ownedBy: 'This site is owned by SD Genesis.',
     imageDeletionNotice: 'All images uploaded to the site are not kept and are deleted after processing.',
+    // المفاتيح المضافة لحل مشكلة الـ Build في Render
+    tryAgain: 'Try Again',
+    gender: 'Gender',
+    age: 'Age'
   },
   ar: {
     title: 'طفلي',
@@ -142,5 +146,9 @@ export const i18n = {
     privacyNotice: 'كل الصور التي يتم رفعها في الموقع لا يتم الاحتفاظ بها. يتم معالجتها فوراً وحذفها.',
     ownedBy: 'هذا الموقع مملوك لشركة أس دي جينيسس',
     imageDeletionNotice: 'كل الصور التي يتم رفعها في الموقع لا يتم الاحتفاظ بها ويتم حذفها بعد المعالجة.',
+    // المفاتيح المضافة لحل مشكلة الـ Build في Render
+    tryAgain: 'إعادة المحاولة',
+    gender: 'الجنس',
+    age: 'العمر المحاكى'
   }
 };
