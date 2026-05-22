@@ -1,7 +1,8 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Dna, Fingerprint, Heart, Search } from 'lucide-react';
-import { Language, i18n } from '../i18n';
+// تم تعديل المسار هنا بنقطة واحدة لقراءة الملف من نفس المجلد لحل مشكلة الـ Build في Render
+import { Language, i18n } from './i18n';
 
 interface LoadingScreenProps {
   lang: Language;
