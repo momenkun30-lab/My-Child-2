@@ -1,6 +1,7 @@
 import React from 'react';
 import { Languages } from 'lucide-react';
-import { Language } from '../i18n';
+// تصحيح المسار بنقطة واحدة لقراءة الملف من نفس المجلد الرئيسي لحل مشكلة الـ Build
+import { Language } from './i18n';
 
 interface LanguageSwitcherProps {
   current: Language;
