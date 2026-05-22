@@ -3,7 +3,8 @@ import {
   Download, Share2, RefreshCw, Baby, Calendar, User
 } from 'lucide-react';
 import { motion } from 'motion/react';
-import { Language, i18n } from '../i18n';
+// تعديل المسار هنا ليقرأ من المجلد الحالي مباشرة لحل خطأ Render
+import { Language, i18n } from './i18n';
 
 interface ResultCardProps {
   image: string;
@@ -28,7 +29,7 @@ export function ResultCard({ image, fatherImage, motherImage, gender, age, lang,
     document.body.removeChild(link);
   };
 
-  // دالة مشاركة النتيجة عبر تطبيقات التواصل الاجتماعي (يدعم الهواتف ذكية)
+  // دالة مشاركة النتيجة عبر تطبيقات التواصل الاجتماعي (يدعم الهواتف الذكية)
   const handleShare = async () => {
     if (navigator.share) {
       try {
