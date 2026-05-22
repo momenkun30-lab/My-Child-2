@@ -109,3 +109,4 @@ export function FileUpload({ label, image, lang, onUpload, onRemove }: FileUploa
     </div>
   );
 }
+
