@@ -71,10 +71,13 @@ export const i18n = {
     privacyNotice: 'All uploaded images are processed temporarily and are not stored on our servers.',
     ownedBy: 'This site is owned by SD Genesis.',
     imageDeletionNotice: 'All images uploaded to the site are not kept and are deleted after processing.',
-    // المفاتيح المضافة لحل مشكلة الـ Build في Render
+    // المفاتيح الإضافية المدمجة لحل تعارض الملفات المتبقية
     tryAgain: 'Try Again',
     gender: 'Gender',
-    age: 'Age'
+    age: 'Age',
+    father: "Father's DNA",
+    mother: "Mother's DNA",
+    resultText: "Check out our future child prediction via Red Line AI!"
   },
   ar: {
     title: 'طفلي',
@@ -146,9 +149,12 @@ export const i18n = {
     privacyNotice: 'كل الصور التي يتم رفعها في الموقع لا يتم الاحتفاظ بها. يتم معالجتها فوراً وحذفها.',
     ownedBy: 'هذا الموقع مملوك لشركة أس دي جينيسس',
     imageDeletionNotice: 'كل الصور التي يتم رفعها في الموقع لا يتم الاحتفاظ بها ويتم حذفها بعد المعالجة.',
-    // المفاتيح المضافة لحل مشكلة الـ Build في Render
-    tryAgain: 'إعادة المحاولة',
-    gender: 'الجنس',
-    age: 'العمر المحاكى'
+    // المفاتيح الإضافية المدمجة لحل تعارض الملفات المتبقية
+    tryAgain: 'محاكاة صفات جديدة',
+    gender: 'الجنس المختار',
+    age: 'العمر المحاكى',
+    father: 'جينات الأب',
+    mother: 'جينات الأم',
+    resultText: "شاهد النتيجة المتوقعة للملامح الجينية عبر منصة الخط الأحمر!"
   }
 };
