@@ -71,7 +71,7 @@ export const i18n = {
     privacyNotice: 'All uploaded images are processed temporarily and are not stored on our servers.',
     ownedBy: 'This site is owned by SD Genesis.',
     imageDeletionNotice: 'All images uploaded to the site are not kept and are deleted after processing.',
-    // المفاتيح الإضافية المدمجة لحل تعارض الملفات المتبقية
+    // المفاتيح المضافة المفقودة لحل تعارض ملفات مشروع طفلي في Render
     tryAgain: 'Try Again',
     gender: 'Gender',
     age: 'Age',
@@ -149,8 +149,8 @@ export const i18n = {
     privacyNotice: 'كل الصور التي يتم رفعها في الموقع لا يتم الاحتفاظ بها. يتم معالجتها فوراً وحذفها.',
     ownedBy: 'هذا الموقع مملوك لشركة أس دي جينيسس',
     imageDeletionNotice: 'كل الصور التي يتم رفعها في الموقع لا يتم الاحتفاظ بها ويتم حذفها بعد المعالجة.',
-    // المفاتيح الإضافية المدمجة لحل تعارض الملفات المتبقية
-    tryAgain: 'محاكاة صفات جديدة',
+    // المفاتيح المضافة المفقودة لحل تعارض ملفات مشروع طفلي في Render
+    tryAgain: 'إعادة المحاولة',
     gender: 'الجنس المختار',
     age: 'العمر المحاكى',
     father: 'جينات الأب',
