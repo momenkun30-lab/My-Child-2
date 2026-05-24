@@ -17,7 +17,8 @@ import {
   Database as DatabaseIcon
 } from 'lucide-react';
 
-import { Language, i18n } from '../i18n';
+// تصحيح المسار بنقطة واحدة لقراءة الملف من نفس المجلد لحل مشكلة الـ Build في Render
+import { Language, i18n } from './i18n';
 import { LanguageSwitcher } from './LanguageSwitcher';
 
 interface AdminPanelProps {
