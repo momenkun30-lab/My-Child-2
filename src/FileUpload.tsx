@@ -1,8 +1,8 @@
-import React from 'react';
+import React from 'react';  
 import { Camera, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
-
-import { Language, i18n } from '../i18n';
+// تصحيح المسار بنقطة واحدة لقراءة الملف من نفس المجلد لحل مشكلة الـ Build في Render
+import { Language, i18n } from './i18n';
 
 interface FileUploadProps {
   label: string;
