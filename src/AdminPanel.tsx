@@ -162,10 +162,19 @@ export function AdminPanel({ onLogout, lang, onLanguageToggle }: AdminPanelProps
   const handleSaveAd = async () => {
     setIsSavingAd(true);
     try {
+      // إرسال البيانات مع ضمان تحويل الأوقات إلى أرقام دقيقة لحل مشكلة النوع في السيرفر
+      const payload = {
+        ...adSettings,
+        startHour: Number(adSettings.startHour),
+        startMinute: Number(adSettings.startMinute),
+        endHour: Number(adSettings.endHour),
+        endMinute: Number(adSettings.endMinute)
+      };
+
       const res = await fetch('/api/ad', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(adSettings)
+        body: JSON.stringify(payload)
       });
       if (!res.ok) throw new Error('Failed to save');
       alert(lang === 'ar' ? 'تم حفظ الإعلان بنجاح!' : 'Ad saved successfully!');
