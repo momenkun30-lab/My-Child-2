@@ -18,12 +18,13 @@ import {
   Users,
   Activity
 } from 'lucide-react';
-import { Language, i18n } from './i18n';
-import { FileUpload } from './components/FileUpload';
-import { LanguageSwitcher } from './components/LanguageSwitcher';
-import { LoadingScreen } from './components/LoadingScreen';
-import { ResultCard } from './components/ResultCard';
-import { AdminPanel } from './components/AdminPanel';
+// تصحيح مسار ملف اللغات ليقرأ من داخل مجلد (طفلي 2) حيث يتواجد الملف فعلياً
+import { Language, i18n } from './طفلي 2/i18n';
+import { FileUpload } from './طفلي 2/FileUpload';
+import { LanguageSwitcher } from './طفلي 2/LanguageSwitcher';
+import { LoadingScreen } from './طفلي 2/LoadingScreen';
+import { ResultCard } from './طفلي 2/ResultCard';
+import { AdminPanel } from './طفلي 2/AdminPanel';
 import { generateChildImage, validateParentsGender } from './services/aiService';
 
 const ADMIN_PASSWORD = "SD09042112";
