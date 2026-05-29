@@ -7,7 +7,8 @@ import dotenv from "dotenv";
 // تفعيل قراءة متغيرات البيئة من ملف .env
 dotenv.config();
 
-const PORT = process.env.PORT || 3000;
+// تحويل المنفذ إلى رقم بشكل صارم لإجبار TypeScript على قبوله وتخطي أخطاء الـ Build في Render
+const PORT: number = Number(process.env.PORT) || 3000;
 
 // الرابط السحابي الخاص بك مدمج به اسم المستخدم وكلمة السر الصحيحة
 const DEFAULT_MONGODB_URI = "mongodb+srv://admin:prPxXYs7PqCwXEGO@cluster0.odxgej5.mongodb.net/tifliDB?retryWrites=true&w=majority&appName=Cluster0";
@@ -101,9 +102,9 @@ async function startServer() {
     });
   }
 
-  // 5. تشغيل السيرفر واستماع الطلبات
+  // 5. تشغيل السيرفر واستماع الطلبات باستخدام المنفذ الرقمي الصريح والآمن
   app.listen(PORT, "0.0.0.0", () => {
-    console.log(`🚀 Server is running on http://localhost:${PORT}`);
+    console.log(`🚀 Server is running on port ${PORT}`);
   });
 }
 
