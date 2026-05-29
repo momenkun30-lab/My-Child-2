@@ -1,13 +1,12 @@
 import express from "express";
 import path from "path";
-import { createServer as createViteServer } from "vite";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 
 // تفعيل قراءة متغيرات البيئة من ملف .env
 dotenv.config();
 
-// تحويل المنفذ إلى رقم بشكل صارم لإجبار TypeScript على قبوله وتخطي أخطاء الـ Build في Render
+// تحويل المنفذ إلى رقم بشكل صارم لتخطي أخطاء الـ Build في Render
 const PORT: number = Number(process.env.PORT) || 3000;
 
 // الرابط السحابي الخاص بك مدمج به اسم المستخدم وكلمة السر الصحيحة
@@ -17,7 +16,7 @@ const MONGODB_URI = (process.env.MONGODB_URI || DEFAULT_MONGODB_URI).trim();
 async function startServer() {
   const app = express();
   
-  // رفع الحد الأقصى لحجم البيانات إلى 50 ميجابايت للسماح برفع صور الوالدين بجودة عالية دون أخطاء
+  // رفع الحد الأقصى لحجم البيانات إلى 50 ميجابايت للسماح برفع الصور بجودة عالية دون أخطاء
   app.use(express.json({ limit: "50mb" })); 
   app.use(express.urlencoded({ limit: "50mb", extended: true }));
 
@@ -40,7 +39,7 @@ async function startServer() {
   });
   const Stats = mongoose.model("Stats", statsSchema);
 
-  // دالة مساعدة للحصول على سجل الإحصائيات العالمي أو إنشائه إن لم يكن موجوداً
+  // دالة مساعدة للحصول على سجل الإحصائيات العالمي أو إنشائه
   async function getGlobalStats() {
     try {
       let stats = await Stats.findOne({ id: "global" });
@@ -49,7 +48,6 @@ async function startServer() {
       }
       return stats;
     } catch (e) {
-      // في حال حدوث مشكلة مؤقتة في الاتصال، نرجع كائن مؤقت (Fallback) لكي لا يتوقف الموقع
       return new Stats({ totalPredictions: 0 });
     }
   }
@@ -66,7 +64,7 @@ async function startServer() {
     }
   });
 
-  // تحديث الإحصائيات وزيادة العداد بمقدار 1 عند إتمام عملية توقع (توليد) جديدة
+  // تحديث الإحصائيات وزيادة العداد بمقدار 1
   app.post("/api/stats/increment", async (req, res) => {
     try {
       const stats = await Stats.findOneAndUpdate(
@@ -85,24 +83,15 @@ async function startServer() {
     res.json({ status: "ok", time: new Date().toISOString() });
   });
 
-  // 4. تكامل بيئة التشغيل Vite (التطوير ضد الإنتاج)
-  if (process.env.NODE_ENV !== "production") {
-    // في وضع التطوير المحلي: استخدم Vite Middleware لتحديث الكود تلقائياً
-    const vite = await createViteServer({
-      server: { middlewareMode: true },
-      appType: "spa",
-    });
-    app.use(vite.middlewares);
-  } else {
-    // في وضع الإنتاج (مثل الرفع على Render): تقديم الملفات النهائية المبنية
-    const distPath = path.join(process.cwd(), "dist");
-    app.use(express.static(distPath));
-    app.get("*", (req, res) => {
-      res.sendFile(path.join(distPath, "index.html"));
-    });
-  }
+  // 4. تقديم الملفات النهائية المبنية للإنتاج (Production) مباشرة وحل مشكلة تحويل Vite
+  const distPath = path.join(process.cwd(), "dist");
+  app.use(express.static(distPath));
+  
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(distPath, "index.html"));
+  });
 
-  // 5. تشغيل السيرفر واستماع الطلبات باستخدام المنفذ الرقمي الصريح والآمن
+  // 5. تشغيل السيرفر واستماع الطلبات
   app.listen(PORT, "0.0.0.0", () => {
     console.log(`🚀 Server is running on port ${PORT}`);
   });
