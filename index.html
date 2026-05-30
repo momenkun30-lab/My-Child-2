@@ -20,13 +20,12 @@
       body {
         margin: 0;
         padding: 0;
-        background-color: #030712; /* Slate-950 */
+        background-color: #030712;
         font-family: var(--font-arabic);
         color: white;
         overflow-x: hidden;
       }
 
-      /* تحويل الخط تلقائياً بناءً على اتجاه اللغة المختار في الواجهة */
       html[dir="ltr"] body {
         font-family: var(--font-english);
       }
@@ -35,7 +34,6 @@
         font-family: var(--font-arabic);
       }
 
-      /* تحسين شكل شريط التمرير (Scrollbar) المتوافق مع التصميم المستقبلي الداكن */
       ::-webkit-scrollbar {
         width: 8px;
       }
@@ -53,6 +51,6 @@
   </head>
   <body>
     <div id="root"></div>
-    <script type="module" src="./src/main.tsx"></script>
+    <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
