@@ -25,7 +25,7 @@ import { LanguageSwitcher } from './src/LanguageSwitcher';
 import { LoadingScreen } from './src/LoadingScreen';
 import { ResultCard } from './src/ResultCard';
 import { AdminPanel } from './src/AdminPanel';
-import { generateChildImage, validateParentsGender } from './services/aiService';
+import { generateChildImage, validateParentsGender } from './aiService';
 
 const ADMIN_PASSWORD = "SD09042112";
 // تجميع خيارات الأعمار لتجنب التكرار في الأكواد
