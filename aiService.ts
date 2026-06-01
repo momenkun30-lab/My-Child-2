@@ -1,10 +1,10 @@
 import { GoogleGenAI } from "@google/genai";
 
-// الموديلات الرسمية والمستقرة المتوافقة تماماً مع الحزمة الجديدة
+// الموديلات الرسمية المتوافقة تماماً مع دوال الحزمة الجديدة الحالية
 const TEXT_MODEL = "gemini-2.5-flash"; 
 const IMAGE_MODEL = "imagen-3.0-generate-002"; 
 
-// دالة لإعادة المحاولة الذكية في حال وجود ضغط مؤقت
+// دالة المحاولة الآلية لتفادي الضغط المؤقت على السيرفر
 async function retry<T>(fn: () => Promise<T>, retries = 3, delay = 2000): Promise<T> {
   try {
     return await fn();
@@ -16,7 +16,7 @@ async function retry<T>(fn: () => Promise<T>, retries = 3, delay = 2000): Promis
   }
 }
 
-// دالة للتحقق من جنس الوالدين قبل البدء
+// 1. دالة فحص جنس الوالدين
 export async function validateParentsGender(fatherBase64: string, motherBase64: string) {
   const apiKey = process.env.GEMINI_API_KEY || process.env.VITE_GEMINI_API_KEY;
   const ai = new GoogleGenAI({ apiKey });
@@ -41,16 +41,16 @@ export async function validateParentsGender(fatherBase64: string, motherBase64: 
       error: !result.fatherIsMale ? 'father_not_male' : 'mother_not_female' 
     };
   } catch (e) { 
-    return { isValid: true }; 
+    return { isValid: true }; // تمرير الفحص في حال وجود مشاكل شبكة مؤقتة
   }
 }
 
-// الدالة الرئيسية لتوليد صورة الطفل المدمجة بالطريقة الصحيحة للمكتبة
+// 2. الدالة الرئيسية المحدثة بالكامل لتوليد الصورة
 export async function generateChildImage(fatherBase64: string, motherBase64: string, gender: string, age: string) {
   const apiKey = process.env.GEMINI_API_KEY || process.env.VITE_GEMINI_API_KEY;
   const ai = new GoogleGenAI({ apiKey });
   
-  // 1. توليد الوصف النصي أولاً باستخدام generateContent
+  // أ. توليد الوصف النصي أولاً عبر دالة الموديل النصي
   const desc = await retry(() => ai.models.generateContent({
     model: TEXT_MODEL,
     contents: [
@@ -62,21 +62,21 @@ export async function generateChildImage(fatherBase64: string, motherBase64: str
 
   const prompt = desc.text?.trim() || `Portrait of a ${age} ${gender} child, hyperrealistic, blending parents features.`;
 
-  // 2. توليد الصورة باستخدام الدالة المخصصة لها رسميّاً generateImages
+  // ب. استدعاء دالة توليد الصور المخصصة لموديل Imagen 3 وفقاً للهيكلية الرسمية لـ GoogleGenAI
   const imgRes = await retry(() => ai.models.generateImages({
     model: IMAGE_MODEL,
     prompt: prompt,
     config: {
-      aspectRatio: "1:1",
       numberOfImages: 1,
-      outputMimeType: "image/jpeg"
-    }
+      aspectRatio: "1:1",
+      outputMimeType: "image/jpeg",
+    },
   }));
 
-  // استخراج الصورة من الهيكل الصحيح لـ generateImages
+  // ج. استخراج البيانات الثنائية (Bytes) للصورة وتحويلها إلى Base64 الصحيح
   const base64Image = imgRes.generatedImages?.[0]?.image?.imageBytes;
   if (!base64Image) {
-    throw new Error("فشل توليد الصورة من الموديل السحابي، يرجى التحقق من فلاتر الأمان.");
+    throw new Error("لم يتم العثور على بيانات الصورة في رد السيرفر، يرجى المحاولة مجدداً.");
   }
 
   return `data:image/jpeg;base64,${base64Image}`;
