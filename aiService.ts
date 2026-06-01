@@ -18,8 +18,8 @@ async function retry<T>(fn: () => Promise<T>, retries = 2, delay = 1500): Promis
 
 // دالة للتحقق من جنس الوالدين (أب وأم) قبل البدء
 export async function validateParentsGender(fatherBase64: string, motherBase64: string) {
-  // تهيئة العميل؛ يقرأ تلقائياً GEMINI_API_KEY من بيئة العمل
-  const ai = new GoogleGenAI();
+  // تهيئة العميل وتمرير المفتاح بشكل صريح لضمان قراءته من سيرفر Railway دون مشاكل
+  const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
   try {
     const response = await ai.models.generateContent({
       model: TEXT_MODEL,
@@ -47,7 +47,8 @@ export async function validateParentsGender(fatherBase64: string, motherBase64: 
 
 // الدالة الرئيسية لتوليد صورة الطفل المدمجة
 export async function generateChildImage(fatherBase64: string, motherBase64: string, gender: string, age: string) {
-  const ai = new GoogleGenAI();
+  // تهيئة العميل وتمرير المفتاح بشكل صريح هنا أيضاً لمنع خطأ الـ undefined
+  const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
   
   // المرحلة الأولى: دمج الملامح وصياغة وصف إنجليزي دقيق
   const desc = await ai.models.generateContent({
