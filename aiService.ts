@@ -1,6 +1,6 @@
 import { GoogleGenAI } from "@google/genai";
 
-// الموديل الحديث والمستقر المعتمد رسمياً في المكتبة الجديدة لتجنب أخطاء المسارات تماماً
+// الموديلات الرسمية والمستقرة المتوافقة تماماً مع الحزمة الجديدة
 const TEXT_MODEL = "gemini-2.5-flash"; 
 const IMAGE_MODEL = "imagen-3.0-generate-002"; 
 
@@ -45,11 +45,12 @@ export async function validateParentsGender(fatherBase64: string, motherBase64: 
   }
 }
 
-// الدالة الرئيسية لتوليد صورة الطفل المدمجة
+// الدالة الرئيسية لتوليد صورة الطفل المدمجة بالطريقة الصحيحة للمكتبة
 export async function generateChildImage(fatherBase64: string, motherBase64: string, gender: string, age: string) {
   const apiKey = process.env.GEMINI_API_KEY || process.env.VITE_GEMINI_API_KEY;
   const ai = new GoogleGenAI({ apiKey });
   
+  // 1. توليد الوصف النصي أولاً باستخدام generateContent
   const desc = await retry(() => ai.models.generateContent({
     model: TEXT_MODEL,
     contents: [
@@ -61,9 +62,10 @@ export async function generateChildImage(fatherBase64: string, motherBase64: str
 
   const prompt = desc.text?.trim() || `Portrait of a ${age} ${gender} child, hyperrealistic, blending parents features.`;
 
-  const imgRes = await retry(() => ai.models.generateContent({
+  // 2. توليد الصورة باستخدام الدالة المخصصة لها رسميّاً generateImages
+  const imgRes = await retry(() => ai.models.generateImages({
     model: IMAGE_MODEL,
-    contents: prompt,
+    prompt: prompt,
     config: {
       aspectRatio: "1:1",
       numberOfImages: 1,
@@ -71,10 +73,11 @@ export async function generateChildImage(fatherBase64: string, motherBase64: str
     }
   }));
 
-  const part = imgRes.candidates?.[0]?.content?.parts?.find(p => p.inlineData);
-  if (!part || !part.inlineData) {
+  // استخراج الصورة من الهيكل الصحيح لـ generateImages
+  const base64Image = imgRes.generatedImages?.[0]?.image?.imageBytes;
+  if (!base64Image) {
     throw new Error("فشل توليد الصورة من الموديل السحابي، يرجى التحقق من فلاتر الأمان.");
   }
 
-  return `data:${part.inlineData.mimeType};base64,${part.inlineData.data}`;
+  return `data:image/jpeg;base64,${base64Image}`;
 }
