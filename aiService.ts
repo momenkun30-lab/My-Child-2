@@ -1,27 +1,28 @@
+
 import { GoogleGenAI } from "@google/genai";
 
-// استخدام النسخة المستقرة المخصصة للإنتاج والضغط العالي لتفادي خطأ 503
+// الموديل الأساسي والمستقر المعتمد رسمياً في هذه المكتبة لتجنب خطأ 404 أو 503
 const TEXT_MODEL = "gemini-1.5-flash"; 
 const IMAGE_MODEL = "imagen-3.0-generate-002"; 
 
-// دالة لإعادة المحاولة في حال حدوث ضغط مؤقت على السيرفر
+// دالة لإعادة المحاولة في حال وجود ضغط مؤقت
 async function retry<T>(fn: () => Promise<T>, retries = 3, delay = 2000): Promise<T> {
   try {
     return await fn();
   } catch (error: any) {
     if (retries <= 0) throw error;
-    // إذا كان الخطأ بسبب الضغط 503، سينتظر الكود تلقائياً ويعيد المحاولة
     if (error.message?.includes("SAFETY") || error.message?.includes("403")) throw error;
     await new Promise(resolve => setTimeout(resolve, delay));
     return retry(fn, retries - 1, delay * 2);
   }
 }
 
-// دالة للتحقق من جنس الوالدين (أب وأم) قبل البدء
 export async function validateParentsGender(fatherBase64: string, motherBase64: string) {
-  const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+  // استخدام التمرير البيئي الصارم
+  const apiKey = process.env.GEMINI_API_KEY || process.env.VITE_GEMINI_API_KEY;
+  const ai = new GoogleGenAI({ apiKey });
+  
   try {
-    // استخدام الـ retry المطور هنا لتفادي أي نبضات ضغط مؤقتة
     const response = await retry(() => ai.models.generateContent({
       model: TEXT_MODEL,
       contents: [
@@ -45,11 +46,10 @@ export async function validateParentsGender(fatherBase64: string, motherBase64: 
   }
 }
 
-// الدالة الرئيسية لتوليد صورة الطفل المدمجة
 export async function generateChildImage(fatherBase64: string, motherBase64: string, gender: string, age: string) {
-  const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+  const apiKey = process.env.GEMINI_API_KEY || process.env.VITE_GEMINI_API_KEY;
+  const ai = new GoogleGenAI({ apiKey });
   
-  // المرحلة الأولى: دمج الملامح وصياغة الوصف مع ميزة إعادة المحاولة الذكية
   const desc = await retry(() => ai.models.generateContent({
     model: TEXT_MODEL,
     contents: [
@@ -61,7 +61,6 @@ export async function generateChildImage(fatherBase64: string, motherBase64: str
 
   const prompt = desc.text?.trim() || `Portrait of a ${age} ${gender} child, hyperrealistic, blending parents features.`;
 
-  // المرحلة الثانية: إرسال الوصف لموديل الصور Imagen
   const imgRes = await retry(() => ai.models.generateContent({
     model: IMAGE_MODEL,
     contents: prompt,
