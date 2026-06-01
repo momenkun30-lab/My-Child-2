@@ -1,11 +1,10 @@
-
 import { GoogleGenAI } from "@google/genai";
 
-// الموديل الأساسي والمستقر المعتمد رسمياً في هذه المكتبة لتجنب خطأ 404 أو 503
-const TEXT_MODEL = "gemini-1.5-flash"; 
+// الموديل الحديث والمستقر المعتمد رسمياً في المكتبة الجديدة لتجنب أخطاء المسارات تماماً
+const TEXT_MODEL = "gemini-2.5-flash"; 
 const IMAGE_MODEL = "imagen-3.0-generate-002"; 
 
-// دالة لإعادة المحاولة في حال وجود ضغط مؤقت
+// دالة لإعادة المحاولة الذكية في حال وجود ضغط مؤقت
 async function retry<T>(fn: () => Promise<T>, retries = 3, delay = 2000): Promise<T> {
   try {
     return await fn();
@@ -17,8 +16,8 @@ async function retry<T>(fn: () => Promise<T>, retries = 3, delay = 2000): Promis
   }
 }
 
+// دالة للتحقق من جنس الوالدين قبل البدء
 export async function validateParentsGender(fatherBase64: string, motherBase64: string) {
-  // استخدام التمرير البيئي الصارم
   const apiKey = process.env.GEMINI_API_KEY || process.env.VITE_GEMINI_API_KEY;
   const ai = new GoogleGenAI({ apiKey });
   
@@ -46,6 +45,7 @@ export async function validateParentsGender(fatherBase64: string, motherBase64: 
   }
 }
 
+// الدالة الرئيسية لتوليد صورة الطفل المدمجة
 export async function generateChildImage(fatherBase64: string, motherBase64: string, gender: string, age: string) {
   const apiKey = process.env.GEMINI_API_KEY || process.env.VITE_GEMINI_API_KEY;
   const ai = new GoogleGenAI({ apiKey });
